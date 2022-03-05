@@ -5,6 +5,9 @@ $album_list = Set.new []
 $updated_album = false
 $current_file = nil
 
+# For fuzzy searching
+$jarow = FuzzyStringMatch::JaroWinkler.create(:native)
+
 class Album
 	attr_accessor :title, :artist, :genre, :tracks, :id
 
@@ -72,7 +75,7 @@ def get_album_by_fuzzy_search
 	max_dist = 0.0
 	max_album = nil
 	for album in $album_list do
-		dist = jarow.getDistance(album.title, input)
+		dist = $jarow.getDistance(album.title, input)
 		if dist > max_dist then
 			max_dist = dist
 			max_album = album

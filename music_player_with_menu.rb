@@ -30,9 +30,6 @@ $update_album_menu = Menu.new(
 )
 
 def main
-	# For fuzzy searching
-	jarow = FuzzyStringMatch::JaroWinkler.create(:native)
-
 	# Setting functions for main menu
 	$main_menu.set_option(1, lambda do
 		file_name = read_string "#{"Enter the File you want to Read in Albums:".underline.magenta} "
@@ -84,6 +81,10 @@ def main
 	end)
 	$select_play_album_menu.set_option(2, lambda do
 		album = get_album_by_fuzzy_search
+		if album == nil
+			puts "Can't find any albums with that name".red
+			return
+		end
 		puts "The album `#{album.title}` is selected".brown
 		playing_track album
 	end)
